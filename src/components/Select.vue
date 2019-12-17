@@ -52,24 +52,26 @@
     </div>
 
     <transition :name="transition">
-      <ul ref="dropdownMenu" v-if="dropdownOpen" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp">
-        <li
-          role="option"
-          v-for="(option, index) in filteredOptions"
-          :key="getOptionKey(option)"
-          class="vs__dropdown-option"
-          :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
-          @mouseover="selectable(option) ? typeAheadPointer = index : null"
-          @mousedown.prevent.stop="selectable(option) ? select(option) : null"
-        >
-          <slot name="option" v-bind="normalizeOptionForSlot(option)">
-            {{ getOptionLabel(option) }}
-          </slot>
-        </li>
-        <li v-if="!filteredOptions.length" class="vs__no-options" @mousedown.stop="">
-          <slot name="no-options">Sorry, no matching options.</slot>
-        </li>
-      </ul>
+      <div  v-if="dropdownOpen" class="vs__dropdown-wrapper">
+        <ul ref="dropdownMenu" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp">
+          <li
+            role="option"
+            v-for="(option, index) in filteredOptions"
+            :key="getOptionKey(option)"
+            class="vs__dropdown-option"
+            :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
+            @mouseover="selectable(option) ? typeAheadPointer = index : null"
+            @mousedown.prevent.stop="selectable(option) ? select(option) : null"
+          >
+            <slot name="option" v-bind="normalizeOptionForSlot(option)">
+              {{ getOptionLabel(option) }}
+            </slot>
+          </li>
+          <li v-if="!filteredOptions.length" class="vs__no-options" @mousedown.stop="">
+            <slot name="no-options">Sorry, no matching options.</slot>
+          </li>
+        </ul>
+      </div>
     </transition>
   </div>
 </template>
