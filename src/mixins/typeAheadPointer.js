@@ -26,6 +26,7 @@ export default {
       for (let i = this.typeAheadPointer - 1; i >= 0; i--) {
         if (this.selectable(this.filteredOptions[i])) {
           this.typeAheadPointer = i;
+          this.typeAheadMaybeSelect();
           if( this.maybeAdjustScroll ) {
             this.maybeAdjustScroll()
           }
@@ -43,6 +44,7 @@ export default {
       for (let i = this.typeAheadPointer + 1; i < this.filteredOptions.length; i++) {
         if (this.selectable(this.filteredOptions[i])) {
           this.typeAheadPointer = i;
+          this.typeAheadMaybeSelect();
           if( this.maybeAdjustScroll ) {
             this.maybeAdjustScroll()
           }
@@ -65,6 +67,26 @@ export default {
 
       if( this.clearSearchOnSelect ) {
         this.search = "";
+      }
+    },
+
+    typeAheadMaybeSelect() {
+      if( this.filteredOptions[ this.typeAheadPointer ] ) {
+        this.typeAheadUpdateValue( this.filteredOptions[ this.typeAheadPointer ] );
+      } else if (this.taggable && this.search.length){
+        this.typeAheadUpdateValue(this.search)
+      }
+    },
+
+    typeAheadUpdateValue(option) {
+      if (!this.isOptionSelected(option)) {
+        if (this.taggable && !this.optionExists(option)) {
+          option = this.createOption(option)
+        }
+        if (this.multiple) {
+          option = this.selectedValue.concat(option)
+        }
+        this.updateValue(option);
       }
     },
   }
