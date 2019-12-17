@@ -312,6 +312,7 @@
         type: Function,
         default: function () {
           if (this.selectOnTab && !this.isComposing) {
+            this.tabIsPressed = true;
             this.typeAheadSelect();
           }
         },
@@ -509,7 +510,8 @@
         open: false,
         isComposing: false,
         pushedTags: [],
-        _value: [] // Internal value managed by Vue Select if no `value` prop is passed
+        _value: [], // Internal value managed by Vue Select if no `value` prop is passed
+        tabIsPressed: false
       }
     },
 
@@ -628,7 +630,15 @@
       onAfterSelect(option) {
         if (this.closeOnSelect) {
           this.open = !this.open
-          this.searchEl.blur()
+
+          //We don't want blur by ourselves when selecting on tab key press - the
+          //browser will do the job otherwise we're messing with automatic
+          //behavior
+          if (!this.tabIsPressed) {
+            this.searchEl.blur()
+          }
+
+          this.tabIsPressed = false;
         }
 
         if (this.clearSearchOnSelect) {
