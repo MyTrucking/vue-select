@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      typeAheadPointer: -1
+      pointer: -1
     }
   },
 
@@ -12,6 +12,21 @@ export default {
           this.typeAheadPointer = i;
           break;
         }
+      }
+    }
+  },
+
+  computed: {
+    typeAheadPointer: {
+      get() {
+        if (this.pointer === -1) {
+          return this.filteredOptions.findIndex( option => this.isOptionSelected(option));
+        } else {
+          return this.pointer
+        }
+      },
+      set(index) {
+        return this.pointer = index
       }
     }
   },
