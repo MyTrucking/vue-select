@@ -1,33 +1,7 @@
 export default {
-  data() {
-    return {
-      pointer: -1
-    }
-  },
-
-  watch: {
-    filteredOptions() {
-      for (let i = 0; i < this.filteredOptions.length; i++) {
-        if (this.selectable(this.filteredOptions[i])) {
-          this.typeAheadPointer = i;
-          break;
-        }
-      }
-    }
-  },
-
   computed: {
-    typeAheadPointer: {
-      get() {
-        if (this.pointer === -1) {
-          return this.filteredOptions.findIndex( option => this.isOptionSelected(option));
-        } else {
-          return this.pointer
-        }
-      },
-      set(index) {
-        return this.pointer = index
-      }
+    typeAheadPointer() {
+      return this.filteredOptions.findIndex( option => this.isOptionSelected(option));
     }
   },
 
@@ -40,8 +14,7 @@ export default {
     typeAheadUp() {
       for (let i = this.typeAheadPointer - 1; i >= 0; i--) {
         if (this.selectable(this.filteredOptions[i])) {
-          this.typeAheadPointer = i;
-          this.typeAheadMaybeSelect();
+          this.typeAheadUpdateValue(this.filteredOptions[i]);
           if( this.maybeAdjustScroll ) {
             this.maybeAdjustScroll()
           }
@@ -58,8 +31,7 @@ export default {
     typeAheadDown() {
       for (let i = this.typeAheadPointer + 1; i < this.filteredOptions.length; i++) {
         if (this.selectable(this.filteredOptions[i])) {
-          this.typeAheadPointer = i;
-          this.typeAheadMaybeSelect();
+          this.typeAheadUpdateValue(this.filteredOptions[i]);
           if( this.maybeAdjustScroll ) {
             this.maybeAdjustScroll()
           }

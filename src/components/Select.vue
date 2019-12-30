@@ -67,8 +67,7 @@
             v-for="(option, index) in filteredOptions"
             :key="getOptionKey(option)"
             class="vs__dropdown-option"
-            :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option), 'DropdownSelector--NonBillable': option.isBillable === false}"
-            @mouseover="selectable(option) ? typeAheadPointer = index : null"
+            :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--disabled': !selectable(option), 'DropdownSelector--NonBillable': option.isBillable === false}"
             @mousedown.prevent.stop="selectable(option) ? select(option) : null"
           >
             <slot name="option" v-bind="normalizeOptionForSlot(option)">
